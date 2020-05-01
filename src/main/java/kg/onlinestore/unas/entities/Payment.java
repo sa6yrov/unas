@@ -45,4 +45,7 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     @Column(name = "currency")
     Currency currency;
+
+    @Column(name = "confirmation_code")
+    String confirmationCode;
 }
