@@ -11,5 +11,5 @@ public interface CartItemService extends BaseService<CartItem> {
 
     List<CartItem> findAllByCart_Id(Long id);
 
-    List<ItemQuantityViewModel> getItemViews(Long cartId);
+    List<ItemQuantityViewModel> getItemViews(String login);
 }

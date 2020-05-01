@@ -5,6 +5,7 @@ import kg.onlinestore.unas.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -31,5 +32,10 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
+    }
+
+    @GetMapping("/check")
+    public String check(Principal principal){
+        return principal.getName();
     }
 }

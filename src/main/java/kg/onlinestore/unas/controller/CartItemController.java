@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -22,9 +23,10 @@ public class CartItemController {
         return new ResponseEntity<>(cartItemService.create(cartItemModel), HttpStatus.OK);
     }
 
-    @GetMapping("/cartId/{cartId}")
-    public List<ItemQuantityViewModel> getAll(@PathVariable Long cartId){
-        return cartItemService.getItemViews(cartId);
+    @GetMapping("/my")
+    public List<ItemQuantityViewModel> getAll(Principal principal){
+
+        return cartItemService.getItemViews(principal.getName());
     }
 
     @PostMapping("/buy/cartId/{cartId}")

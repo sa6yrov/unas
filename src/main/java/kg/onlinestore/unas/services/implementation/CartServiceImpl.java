@@ -1,6 +1,7 @@
 package kg.onlinestore.unas.services.implementation;
 
 import kg.onlinestore.unas.entities.Cart;
+import kg.onlinestore.unas.entities.User;
 import kg.onlinestore.unas.repositories.CartRepo;
 import kg.onlinestore.unas.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,10 @@ public class CartServiceImpl implements CartService {
     @Override
     public void deleteById(Long id) {
         if(getById(id) != null) cartRepo.deleteById(id);
+    }
+
+    @Override
+    public Cart findByUser(User user) {
+        return cartRepo.findByUser(user);
     }
 }
