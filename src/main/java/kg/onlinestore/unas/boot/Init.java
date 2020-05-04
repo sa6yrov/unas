@@ -1,9 +1,14 @@
 package kg.onlinestore.unas.boot;
 
 import kg.onlinestore.unas.entities.Category;
+import kg.onlinestore.unas.entities.User;
+import kg.onlinestore.unas.entities.Wallet;
+import kg.onlinestore.unas.enums.Currency;
 import kg.onlinestore.unas.models.ItemModel;
 import kg.onlinestore.unas.services.CategoryService;
 import kg.onlinestore.unas.services.ItemService;
+import kg.onlinestore.unas.services.UserService;
+import kg.onlinestore.unas.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -18,8 +23,20 @@ public class Init implements CommandLineRunner {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private WalletService walletService;
+
+    @Autowired
+    private UserService userService;
+
     @Override
     public void run(String... args) throws Exception {
+        //Admin
+        User admin = userService.save(new User().builder().login("chef").password("chef").email("chef@gmail.com").isActive(true).build());
+
+        //Store's wallet
+        walletService.save(new Wallet().builder().requisite("chef0102").balance(new BigDecimal(1000000)).currency(Currency.KGZ).user(admin).bankCard("VISA").build());
+
         //category initializing
         categoryService.save(new Category().builder().categoryName("computer hardware").build());
         categoryService.save(new Category().builder().categoryName("camera, photo & accessories").build());

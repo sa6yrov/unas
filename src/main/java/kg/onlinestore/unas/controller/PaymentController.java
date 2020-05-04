@@ -1,7 +1,7 @@
 package kg.onlinestore.unas.controller;
 
-import kg.onlinestore.unas.entities.Payment;
-import kg.onlinestore.unas.services.PaymentService;
+import kg.onlinestore.unas.entities.PaymentCheque;
+import kg.onlinestore.unas.services.PaymentChequeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,25 +11,25 @@ import java.util.List;
 @RequestMapping("/payment")
 public class PaymentController {
     @Autowired
-    private PaymentService paymentService;
+    private PaymentChequeService paymentChequeService;
 
     @PostMapping
-    public Payment save(@RequestBody Payment payment){
-        return paymentService.save(payment);
+    public PaymentCheque save(@RequestBody PaymentCheque paymentCheque){
+        return paymentChequeService.save(paymentCheque);
     }
 
     @GetMapping
-    public List<Payment> getAll(){
-        return paymentService.getAll();
+    public List<PaymentCheque> getAll(){
+        return paymentChequeService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Payment getById (@PathVariable("id")Long id){
-        return paymentService.getById(id);
+    public PaymentCheque getById (@PathVariable("id")Long id){
+        return paymentChequeService.getById(id);
     }
 
     @DeleteMapping("/delete/{id}")
     public void deletePayment(@PathVariable("id") Long id) {
-        paymentService.deleteById(id);
+        paymentChequeService.deleteById(id);
     }
 }

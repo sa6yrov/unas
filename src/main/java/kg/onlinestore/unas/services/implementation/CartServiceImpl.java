@@ -1,13 +1,11 @@
 package kg.onlinestore.unas.services.implementation;
 
-import kg.onlinestore.unas.entities.Cart;
-import kg.onlinestore.unas.entities.CartItem;
-import kg.onlinestore.unas.entities.Item;
-import kg.onlinestore.unas.entities.User;
+import kg.onlinestore.unas.entities.*;
 import kg.onlinestore.unas.models.ItemQuantityViewModel;
 import kg.onlinestore.unas.repositories.CartRepo;
 import kg.onlinestore.unas.services.CartItemService;
 import kg.onlinestore.unas.services.CartService;
+import kg.onlinestore.unas.services.PaymentChequeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +20,13 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private CartItemService cartItemService;
 
+    @Autowired
+    private PaymentChequeService paymentChequeService;
 
+    @Override
+    public Cart save(Cart cart) {
+        return cartRepo.save(cart);
+    }
 
     @Override
     public Cart findByUser(User user) {
@@ -33,4 +37,12 @@ public class CartServiceImpl implements CartService {
     public List<ItemQuantityViewModel> showItemViews(String login) {
         return cartItemService.getItemViews(login);
     }
+
+    @Override
+    public PaymentCheque buy(String login) {
+        return paymentChequeService.createPayment(login);
+
+    }
+
+
 }

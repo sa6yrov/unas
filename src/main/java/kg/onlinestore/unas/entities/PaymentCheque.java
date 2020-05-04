@@ -17,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "payments")
-public class Payment {
+public class PaymentCheque {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +46,4 @@ public class Payment {
     @Column(name = "currency")
     Currency currency;
 
-    @Column(name = "confirmation_code")
-    String confirmationCode;
 }

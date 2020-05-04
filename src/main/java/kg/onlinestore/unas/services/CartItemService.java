@@ -10,7 +10,7 @@ import java.util.List;
 public interface CartItemService extends BaseService<CartItem> {
     CartItem create(CartItemModel cartItemModel, String login);
 
-    List<CartItem> findAllByCart_Id(Long id);
+    List<CartItem> findAllByCart_IdAndStatus_NotPurchased(Long id);
 
     List<ItemQuantityViewModel> getItemViews(String login);
 }

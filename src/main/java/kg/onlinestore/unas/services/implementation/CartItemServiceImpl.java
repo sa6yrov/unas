@@ -1,22 +1,15 @@
 package kg.onlinestore.unas.services.implementation;
 
-import kg.onlinestore.unas.entities.Cart;
-import kg.onlinestore.unas.entities.CartItem;
-import kg.onlinestore.unas.entities.Item;
-import kg.onlinestore.unas.entities.User;
+import kg.onlinestore.unas.entities.*;
 import kg.onlinestore.unas.enums.Status;
 import kg.onlinestore.unas.models.CartItemModel;
 import kg.onlinestore.unas.models.ItemQuantityViewModel;
 import kg.onlinestore.unas.repositories.CartItemRepo;
-import kg.onlinestore.unas.services.CartItemService;
-import kg.onlinestore.unas.services.CartService;
-import kg.onlinestore.unas.services.ItemService;
-import kg.onlinestore.unas.services.UserService;
+import kg.onlinestore.unas.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +27,7 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Autowired
     private UserService userService;
+
 
     @Override
     public List<CartItem> getAll() {
@@ -69,12 +63,15 @@ public class CartItemServiceImpl implements CartItemService {
         cartItem.setItemsQuantity(cartItemModel.getItemsQuantity());
         cartItem.setStatus(Status.NOT_PURCHASED);
 
+        cart.setTotalAmount(cart.getTotalAmount().add(cartItem.getUnitItemPrice().multiply(new BigDecimal(cartItem.getItemsQuantity()))));
+        cartService.save(cart);
+
         return save(cartItem);
     }
 
     @Override
-    public List<CartItem> findAllByCart_Id(Long id) {
-        return cartItemRepo.findAllByCart_Id(id);
+    public List<CartItem> findAllByCart_IdAndStatus_NotPurchased(Long id) {
+        return cartItemRepo.findAllByCart_IdAndStatus_NotPurchased(id);
     }
 
     @Override
@@ -82,7 +79,7 @@ public class CartItemServiceImpl implements CartItemService {
         User user = userService.findByLogin(login);
         Cart cart = cartService.findByUser(user);
         List<ItemQuantityViewModel> itemQuantityViewModelList = new ArrayList<>();
-        List<CartItem> cartItemList = findAllByCart_Id(cart.getId());
+        List<CartItem> cartItemList = findAllByCart_IdAndStatus_NotPurchased(cart.getId());
         for (CartItem cartItem : cartItemList) {
             Item item = cartItem.getItem();
 
@@ -93,4 +90,9 @@ public class CartItemServiceImpl implements CartItemService {
         }
         return itemQuantityViewModelList;
     }
+
+
+
+
+
 }
