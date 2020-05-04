@@ -57,10 +57,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
         http.httpBasic().and().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/item").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/item").permitAll()
+                .antMatchers(HttpMethod.GET, "/item/category/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/category").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/category").permitAll()
                 .antMatchers("/wallet/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/cart-item/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/cart/**").hasAnyRole("ADMIN", "USER")
                 .and().csrf().disable();
     }
 

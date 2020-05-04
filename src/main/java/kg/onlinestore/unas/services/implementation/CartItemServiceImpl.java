@@ -4,6 +4,7 @@ import kg.onlinestore.unas.entities.Cart;
 import kg.onlinestore.unas.entities.CartItem;
 import kg.onlinestore.unas.entities.Item;
 import kg.onlinestore.unas.entities.User;
+import kg.onlinestore.unas.enums.Status;
 import kg.onlinestore.unas.models.CartItemModel;
 import kg.onlinestore.unas.models.ItemQuantityViewModel;
 import kg.onlinestore.unas.repositories.CartItemRepo;
@@ -14,6 +15,8 @@ import kg.onlinestore.unas.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,13 +57,17 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public CartItem create(CartItemModel cartItemModel) {
-        Cart cart = cartService.getById(cartItemModel.getCartId());
+    public CartItem create(CartItemModel cartItemModel, String login) {
+        User user = userService.findByLogin(login);
+        Cart cart = cartService.findByUser(user);
         Item item = itemService.getById(cartItemModel.getItemId());
         CartItem cartItem = new CartItem();
         cartItem.setCart(cart);
         cartItem.setItem(item);
+        cartItem.setUnitItemPrice(item.getPrice().subtract
+                (item.getPrice().divide(new BigDecimal(100)).multiply(new BigDecimal(item.getDiscountPercentages()))));
         cartItem.setItemsQuantity(cartItemModel.getItemsQuantity());
+        cartItem.setStatus(Status.NOT_PURCHASED);
 
         return save(cartItem);
     }

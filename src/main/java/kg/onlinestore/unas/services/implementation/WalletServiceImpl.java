@@ -9,6 +9,7 @@ import kg.onlinestore.unas.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,13 +43,13 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public Wallet create(WalletModel walletModel) {
+    public Wallet create(WalletModel walletModel, String login) {
         Wallet wallet = new Wallet();
-        User user = userService.getById(walletModel.getUserId());
+        User user = userService.findByLogin(login);
         if(user == null) return null;
         wallet.setUser(user);
         wallet.setRequisite(walletModel.getRequisite());
-        wallet.setBalance(walletModel.getBalance());
+        wallet.setBalance(new BigDecimal(0));
         wallet.setCurrency(walletModel.getCurrency());
         wallet.setBankCard(walletModel.getBankCard());
 

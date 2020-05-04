@@ -10,7 +10,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartItemModel {
-    Long itemId;
-    Integer itemsQuantity;
+public class UserAuth {
+    String login;
+
+    String password;
 }

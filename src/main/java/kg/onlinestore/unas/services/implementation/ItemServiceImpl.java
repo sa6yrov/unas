@@ -52,4 +52,9 @@ public class ItemServiceImpl implements ItemService {
         
         return save(item);
     }
+
+    @Override
+    public List<Item> findAllByCategory_Id(Long id) {
+        return itemRepo.findAllByCategory_Id(id);
+    }
 }

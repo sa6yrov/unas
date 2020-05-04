@@ -3,6 +3,7 @@ package kg.onlinestore.unas.services.implementation;
 import kg.onlinestore.unas.entities.Cart;
 import kg.onlinestore.unas.entities.User;
 import kg.onlinestore.unas.entities.UserRole;
+import kg.onlinestore.unas.models.UserAuth;
 import kg.onlinestore.unas.repositories.UserRepo;
 import kg.onlinestore.unas.services.CartService;
 import kg.onlinestore.unas.services.UserRoleService;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +74,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByLogin(String login) {
         return userRepo.findByLogin(login).orElse(null);
+    }
+
+    @Override
+    public String getToken(UserAuth userAuth) {
+        User user = findByLogin(userAuth.getLogin());
+        if(user == null) return "Error";
+        String rawPassword = userAuth.getPassword();
+        String encodedPassword = user.getPassword();
+        if(passwordEncoder.matches(rawPassword, encodedPassword)) {
+            String loginPasswordPair = userAuth.getLogin() + ":" + userAuth.getPassword();//admin:1234
+            String token = Base64.getEncoder().encodeToString(loginPasswordPair.getBytes());
+            return "Basic " + token;
+        }
+        return "Error";
     }
 
 }

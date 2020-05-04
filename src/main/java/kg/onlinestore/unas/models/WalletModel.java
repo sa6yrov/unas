@@ -14,11 +14,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WalletModel {
-
-    Long userId;
     String requisite;
     Currency currency;
-    BigDecimal balance;
     String bankCard;
 
 }

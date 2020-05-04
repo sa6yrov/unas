@@ -1,6 +1,7 @@
 package kg.onlinestore.unas.controller;
 
 import kg.onlinestore.unas.entities.User;
+import kg.onlinestore.unas.models.UserAuth;
 import kg.onlinestore.unas.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,4 +39,10 @@ public class UserController {
     public String check(Principal principal){
         return principal.getName();
     }
+
+    @PostMapping("/auth")
+    public String signIn(@RequestBody UserAuth userAuth){
+        return userService.getToken(userAuth);
+    }
+
 }

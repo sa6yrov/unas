@@ -4,5 +4,7 @@ public enum Status {
     SUCCESS,
     PROCESSING,
     FAILED,
-    BLOCKED
+    BLOCKED,
+    PURCHASED,
+    NOT_PURCHASED
 }

@@ -19,19 +19,18 @@ public class CartItemController {
     private CartItemService cartItemService;
 
     @PostMapping
-    public ResponseEntity<CartItem> putIntoCart(@RequestBody CartItemModel cartItemModel){
-        return new ResponseEntity<>(cartItemService.create(cartItemModel), HttpStatus.OK);
+    public ResponseEntity<CartItem> putIntoCart(@RequestBody CartItemModel cartItemModel, Principal principal){
+        return new ResponseEntity<>(cartItemService.create(cartItemModel, principal.getName()), HttpStatus.OK);
     }
 
-    @GetMapping("/my")
-    public List<ItemQuantityViewModel> getAll(Principal principal){
+//    @GetMapping("/my")
+//    public List<ItemQuantityViewModel> getAll(Principal principal){
+//
+//        return cartItemService.getItemViews(principal.getName());
+//    }
 
-        return cartItemService.getItemViews(principal.getName());
-    }
-
-    @PostMapping("/buy/cartId/{cartId}")
-    public ResponseEntity buyItems(@PathVariable Long cartId){
-
-        return new ResponseEntity(HttpStatus.OK);
-    }
+//    @PostMapping("/buy")
+//    public ResponseEntity buyItems(@PathVariable Long cartId){
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
 }

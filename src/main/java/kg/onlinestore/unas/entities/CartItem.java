@@ -1,5 +1,6 @@
 package kg.onlinestore.unas.entities;
 
+import kg.onlinestore.unas.enums.Status;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -31,4 +32,8 @@ public class CartItem {
 
     @Column(name = "items_quantity")
     Integer itemsQuantity;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    Status status;
 }
