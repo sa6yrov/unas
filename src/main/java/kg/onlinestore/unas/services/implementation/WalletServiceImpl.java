@@ -55,4 +55,9 @@ public class WalletServiceImpl implements WalletService {
 
         return save(wallet);
     }
+
+    @Override
+    public Wallet findByUser(User user) {
+        return walletRepo.findByUser(user);
+    }
 }

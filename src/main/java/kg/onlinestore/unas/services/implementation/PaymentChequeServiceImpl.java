@@ -1,16 +1,11 @@
 package kg.onlinestore.unas.services.implementation;
 
-import kg.onlinestore.unas.entities.PaymentCheque;
-import kg.onlinestore.unas.entities.User;
-import kg.onlinestore.unas.entities.Wallet;
+import kg.onlinestore.unas.entities.*;
 import kg.onlinestore.unas.enums.Status;
 
 import kg.onlinestore.unas.repositories.PaymentChequeRepo;
 
-import kg.onlinestore.unas.services.CartService;
-import kg.onlinestore.unas.services.PaymentChequeService;
-import kg.onlinestore.unas.services.UserService;
-import kg.onlinestore.unas.services.WalletService;
+import kg.onlinestore.unas.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +27,9 @@ public class PaymentChequeServiceImpl implements PaymentChequeService {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private CartItemService cartItemService;
 
 
     @Override
@@ -82,6 +80,12 @@ public class PaymentChequeServiceImpl implements PaymentChequeService {
         walletService.save(from);
         walletService.save(to);
 
+        Cart cart = cartService.findByUser(from.getUser());
+        List<CartItem> cartItemList = cartItemService.findAllByCart_IdAndStatus_NotPurchased(cart.getId());
+        for (CartItem cartItem : cartItemList) {
+            cartItem.setStatus(Status.PURCHASED);
+            cartItemService.save(cartItem);
+        }
         return save(paymentCheque);
     }
 

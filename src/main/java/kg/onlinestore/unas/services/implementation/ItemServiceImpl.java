@@ -44,7 +44,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item create(ItemModel itemModel) {
         Item item = new Item();
-        Category category = categoryService.getById(itemModel.getCategoryId());
+        Category category = categoryService.getById(itemModel.getCategory());
         item.setItemName(itemModel.getItemName());
         item.setCategory(category);
         item.setPrice(itemModel.getPrice());

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class ItemModel {
 
     String itemName;
-    Long categoryId;
+    Long category;
     BigDecimal price;
     Integer discountPercentages;
     

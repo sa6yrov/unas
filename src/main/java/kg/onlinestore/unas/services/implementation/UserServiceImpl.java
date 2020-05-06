@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         user = userRepo.save(user);
 
         UserRole userRole = new UserRole();
-        userRole.setRoleName("ROLE_ADMIN");
+        userRole.setRoleName("ROLE_USER");
         userRole.setUser(user);
         userRoleService.save(userRole);
 
