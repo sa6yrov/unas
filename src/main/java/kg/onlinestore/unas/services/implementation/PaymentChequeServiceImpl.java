@@ -81,7 +81,7 @@ public class PaymentChequeServiceImpl implements PaymentChequeService {
         walletService.save(to);
 
         Cart cart = cartService.findByUser(from.getUser());
-        List<CartItem> cartItemList = cartItemService.findAllByCart_IdAndStatus_NotPurchased(cart.getId());
+        List<CartItem> cartItemList = cartItemService.findAllByCart_IdAndStatus(cart.getId(), Status.NOT_PURCHASED);
         for (CartItem cartItem : cartItemList) {
             cartItem.setStatus(Status.PURCHASED);
             cartItemService.save(cartItem);

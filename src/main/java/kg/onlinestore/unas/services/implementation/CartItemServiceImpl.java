@@ -70,8 +70,8 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public List<CartItem> findAllByCart_IdAndStatus_NotPurchased(Long id) {
-        return cartItemRepo.findAllByCart_IdAndStatus_NotPurchased(id);
+    public List<CartItem> findAllByCart_IdAndStatus(Long id, Status status) {
+        return cartItemRepo.findAllByCart_IdAndStatus(id, status);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class CartItemServiceImpl implements CartItemService {
         User user = userService.findByLogin(login);
         Cart cart = cartService.findByUser(user);
         List<ItemQuantityViewModel> itemQuantityViewModelList = new ArrayList<>();
-        List<CartItem> cartItemList = findAllByCart_IdAndStatus_NotPurchased(cart.getId());
+        List<CartItem> cartItemList = findAllByCart_IdAndStatus(cart.getId(), Status.NOT_PURCHASED);
         for (CartItem cartItem : cartItemList) {
             Item item = cartItem.getItem();
 

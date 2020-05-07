@@ -1,6 +1,7 @@
 package kg.onlinestore.unas.services;
 
 import kg.onlinestore.unas.entities.CartItem;
+import kg.onlinestore.unas.enums.Status;
 import kg.onlinestore.unas.models.CartItemModel;
 import kg.onlinestore.unas.models.ItemQuantityViewModel;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public interface CartItemService extends BaseService<CartItem> {
     CartItem create(CartItemModel cartItemModel, String login);
 
-    List<CartItem> findAllByCart_IdAndStatus_NotPurchased(Long id);
+    List<CartItem> findAllByCart_IdAndStatus(Long id, Status status);
 
     List<ItemQuantityViewModel> getItemViews(String login);
 }
