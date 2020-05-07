@@ -2,6 +2,7 @@ package kg.onlinestore.unas.services.implementation;
 
 import kg.onlinestore.unas.entities.User;
 import kg.onlinestore.unas.entities.Wallet;
+import kg.onlinestore.unas.models.ReplenishModel;
 import kg.onlinestore.unas.models.WalletModel;
 import kg.onlinestore.unas.repositories.WalletRepo;
 import kg.onlinestore.unas.services.UserService;
@@ -59,5 +60,17 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public Wallet findByUser(User user) {
         return walletRepo.findByUser(user);
+    }
+
+    @Override
+    public String replenish(ReplenishModel replenishModel, String login) {
+        User user = userService.findByLogin(login);
+        Wallet wallet = findByUser(user);
+        if(replenishModel.getBankCard().equals(wallet.getBankCard())){
+            wallet.setBalance(wallet.getBalance().add(replenishModel.getAmount()));
+            save(wallet);
+            return "You have successfully topped up your balance";
+        }
+        return "Sorry, the balance is not topped up";
     }
 }

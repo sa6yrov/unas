@@ -4,6 +4,7 @@ import kg.onlinestore.unas.entities.Cart;
 import kg.onlinestore.unas.entities.User;
 import kg.onlinestore.unas.entities.UserRole;
 import kg.onlinestore.unas.models.UserAuth;
+import kg.onlinestore.unas.models.UserModel;
 import kg.onlinestore.unas.repositories.UserRepo;
 import kg.onlinestore.unas.services.CartService;
 import kg.onlinestore.unas.services.UserRoleService;
@@ -53,7 +54,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user) {
+    public User createUser(UserModel userModel) {
+        User user = new User().builder()
+                .login(userModel.getLogin())
+                .password(userModel.getPassword())
+                .email(userModel.getEmail())
+                .isActive(true)
+                .build();
+
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         user = userRepo.save(user);

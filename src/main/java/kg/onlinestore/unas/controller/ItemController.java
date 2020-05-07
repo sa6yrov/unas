@@ -24,6 +24,7 @@ public class ItemController {
     public List<Item> getItemByCategoryId(@PathVariable Long id){
         return itemService.findAllByCategory_Id(id);
     }
+
     @PostMapping
     public Item save (@RequestBody ItemModel itemModel){
         return itemService.create(itemModel);

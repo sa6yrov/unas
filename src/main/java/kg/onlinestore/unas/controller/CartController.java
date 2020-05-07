@@ -3,6 +3,7 @@ package kg.onlinestore.unas.controller;
 import kg.onlinestore.unas.entities.Cart;
 import kg.onlinestore.unas.entities.PaymentCheque;
 import kg.onlinestore.unas.entities.User;
+import kg.onlinestore.unas.exceptions.WrongBalanceException;
 import kg.onlinestore.unas.models.ItemQuantityViewModel;
 import kg.onlinestore.unas.services.CartItemService;
 import kg.onlinestore.unas.services.CartService;
@@ -49,8 +50,8 @@ public class CartController {
         return cartItemService.getItemViews(principal.getName());
     }
 
-    @PostMapping("/my/purchase")
-    public ResponseEntity<PaymentCheque> buyItems(Principal principal){
+    @GetMapping("/my/purchase")
+    public ResponseEntity<PaymentCheque> buyItems(Principal principal) throws WrongBalanceException {
         return new ResponseEntity<>(cartService.buy(principal.getName()), HttpStatus.OK);
     }
 }

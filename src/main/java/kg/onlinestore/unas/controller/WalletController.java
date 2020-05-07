@@ -1,6 +1,7 @@
 package kg.onlinestore.unas.controller;
 
 import kg.onlinestore.unas.entities.Wallet;
+import kg.onlinestore.unas.models.ReplenishModel;
 import kg.onlinestore.unas.models.WalletModel;
 import kg.onlinestore.unas.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
@@ -35,6 +37,11 @@ public class WalletController {
     @DeleteMapping("/delete/{id}")
     public void deleteWallet(@PathVariable("id") Long id) {
         walletService.deleteById(id);
+    }
+
+    @PostMapping("/replenish")
+    public String replenish(@RequestBody ReplenishModel replenishModel, Principal principal){
+        return walletService.replenish(replenishModel, principal.getName());
     }
 
 }

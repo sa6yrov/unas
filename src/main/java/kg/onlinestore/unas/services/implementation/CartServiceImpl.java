@@ -1,6 +1,7 @@
 package kg.onlinestore.unas.services.implementation;
 
 import kg.onlinestore.unas.entities.*;
+import kg.onlinestore.unas.exceptions.WrongBalanceException;
 import kg.onlinestore.unas.models.ItemQuantityViewModel;
 import kg.onlinestore.unas.repositories.CartRepo;
 import kg.onlinestore.unas.services.CartItemService;
@@ -39,7 +40,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public PaymentCheque buy(String login) {
+    public PaymentCheque buy(String login) throws WrongBalanceException {
         return paymentChequeService.createPayment(login);
 
     }

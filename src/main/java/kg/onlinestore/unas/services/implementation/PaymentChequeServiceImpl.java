@@ -3,6 +3,7 @@ package kg.onlinestore.unas.services.implementation;
 import kg.onlinestore.unas.entities.*;
 import kg.onlinestore.unas.enums.Status;
 
+import kg.onlinestore.unas.exceptions.WrongBalanceException;
 import kg.onlinestore.unas.repositories.PaymentChequeRepo;
 
 import kg.onlinestore.unas.services.*;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,14 +58,14 @@ public class PaymentChequeServiceImpl implements PaymentChequeService {
 
 
     @Override
-    public PaymentCheque createPayment(String login) {
+    public PaymentCheque createPayment(String login) throws WrongBalanceException {
         User user = userService.findByLogin(login);
         Wallet walletFrom = walletService.findByUser(user);
         Wallet walletTo = walletService.getById(1L);
-
-        PaymentCheque paymentCheque = new PaymentCheque();
-        paymentCheque.builder()
+        if(walletFrom.getBalance().compareTo(BigDecimal.ZERO) <= 0) throw new WrongBalanceException();
+        PaymentCheque paymentCheque = new PaymentCheque().builder()
                 .amount(cartService.findByUser(user).getTotalAmount())
+                .createdDate(new Date())
                 .currency(walletFrom.getCurrency())
                 .walletFrom(walletFrom)
                 .walletTo(walletTo)

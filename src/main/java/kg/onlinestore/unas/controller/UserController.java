@@ -2,6 +2,7 @@ package kg.onlinestore.unas.controller;
 
 import kg.onlinestore.unas.entities.User;
 import kg.onlinestore.unas.models.UserAuth;
+import kg.onlinestore.unas.models.UserModel;
 import kg.onlinestore.unas.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +22,8 @@ public class UserController {
     }
 
     @PostMapping
-    public User save(@RequestBody User user){
-        return userService.createUser(user);
+    public User save(@RequestBody UserModel userModel){
+        return userService.createUser(userModel);
     }
 
     @GetMapping("/{id}")
