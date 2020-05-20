@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,5 +73,10 @@ public class WalletServiceImpl implements WalletService {
             return "You have successfully topped up your balance";
         }
         return "Sorry, the balance is not topped up";
+    }
+
+    @Override
+    public String generateRequisite() {
+        return "" + System.currentTimeMillis();
     }
 }

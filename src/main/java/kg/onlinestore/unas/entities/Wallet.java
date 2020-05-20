@@ -24,11 +24,11 @@ public class Wallet {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     User user;
 
-    @Column(name = "requisite")
+    @Column(name = "requisite", nullable = false, unique = true)
     String requisite;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "currency")
+    @Column(name = "currency", nullable = false)
     Currency currency;
 
     @Column(name = "balance")

@@ -11,4 +11,6 @@ public interface WalletService extends BaseService<Wallet> {
     Wallet findByUser(User user);
 
     String replenish(ReplenishModel replenishModel, String login);
+
+    String generateRequisite();
 }

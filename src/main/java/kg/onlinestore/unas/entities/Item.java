@@ -20,14 +20,14 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "item_name")
+    @Column(name = "item_name", nullable = false)
     String itemName;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     Category category;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     BigDecimal price;
 
     @Column(name = "discount_percentages")

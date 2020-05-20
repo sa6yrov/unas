@@ -1,10 +1,13 @@
 package kg.onlinestore.unas.controller;
 
 import kg.onlinestore.unas.entities.User;
+import kg.onlinestore.unas.exceptions.WrongUserException;
 import kg.onlinestore.unas.models.UserAuth;
 import kg.onlinestore.unas.models.UserModel;
 import kg.onlinestore.unas.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -13,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    
     @Autowired
     private UserService userService;
 
@@ -22,8 +26,13 @@ public class UserController {
     }
 
     @PostMapping
-    public User save(@RequestBody UserModel userModel){
-        return userService.createUser(userModel);
+    public ResponseEntity<?> save(@RequestBody UserModel userModel){
+        try {
+            return new ResponseEntity<>(userService.createUser(userModel), HttpStatus.OK);
+
+        } catch (WrongUserException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{id}")
