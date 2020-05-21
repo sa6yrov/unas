@@ -2,6 +2,7 @@ package kg.onlinestore.unas.services.implementation;
 
 import kg.onlinestore.unas.entities.*;
 import kg.onlinestore.unas.enums.Status;
+import kg.onlinestore.unas.models.CartItemHistoryModel;
 import kg.onlinestore.unas.models.CartItemModel;
 import kg.onlinestore.unas.models.ItemQuantityViewModel;
 import kg.onlinestore.unas.repositories.CartItemRepo;
@@ -27,6 +28,12 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private WalletService walletService;
+
+    @Autowired
+    private PaymentChequeService paymentChequeService;
 
 
     @Override
@@ -91,8 +98,29 @@ public class CartItemServiceImpl implements CartItemService {
         return itemQuantityViewModelList;
     }
 
+    @Override
+    public List<CartItemHistoryModel> getAllPurchasedCartItems(String login) {
+        User user = userService.findByLogin(login);
+        Cart cart = cartService.findByUser(user);
+        Wallet wallet = walletService.findByUser(user);
+        List<CartItemHistoryModel> cartItemHistoryModels = new ArrayList<>();
 
+        List<CartItem> cartItems = findAllByCart_IdAndStatus(cart.getId(), Status.PURCHASED);
+        List<PaymentCheque> paymentCheques = paymentChequeService.findAllByWalletFrom(wallet);
 
+        for (CartItem c : cartItems) {
+            CartItemHistoryModel cartItemHistoryModel = new CartItemHistoryModel();
+            cartItemHistoryModel.setItemName(c.getItem().getItemName());
+            cartItemHistoryModel.setItemQuantity(c.getItemsQuantity());
+            cartItemHistoryModel.setStatus(c.getStatus());
+            cartItemHistoryModel.setAmount(c.getUnitItemPrice().multiply(new BigDecimal(c.getItemsQuantity())));
+            for (PaymentCheque p : paymentCheques) {
+                cartItemHistoryModel.setPurchasedDate(p.getCreatedDate().toString());
+            }
+            cartItemHistoryModels.add(cartItemHistoryModel);
+        }
+        return cartItemHistoryModels;
+    }
 
 
 }

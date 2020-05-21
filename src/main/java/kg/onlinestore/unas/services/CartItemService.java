@@ -2,6 +2,7 @@ package kg.onlinestore.unas.services;
 
 import kg.onlinestore.unas.entities.CartItem;
 import kg.onlinestore.unas.enums.Status;
+import kg.onlinestore.unas.models.CartItemHistoryModel;
 import kg.onlinestore.unas.models.CartItemModel;
 import kg.onlinestore.unas.models.ItemQuantityViewModel;
 
@@ -14,4 +15,6 @@ public interface CartItemService extends BaseService<CartItem> {
     List<CartItem> findAllByCart_IdAndStatus(Long id, Status status);
 
     List<ItemQuantityViewModel> getItemViews(String login);
+
+    List<CartItemHistoryModel> getAllPurchasedCartItems(String login);
 }

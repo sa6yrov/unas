@@ -17,4 +17,5 @@ public interface CartService {
     List<ItemQuantityViewModel> showItemViews(String login);
 
     PaymentCheque buy(String login) throws WrongBalanceException;
+
 }

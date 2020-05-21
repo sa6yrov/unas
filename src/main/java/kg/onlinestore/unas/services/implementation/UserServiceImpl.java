@@ -64,8 +64,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(UserModel userModel) throws WrongUserException {
 
-        User user = getUserForSave(userModel);
-        if(user.equals(findByLogin(user.getLogin()))) throw new WrongUserException("User with this username already exists");
+
+        if(findByLogin(userModel.getLogin()) != null) throw new WrongUserException("User with this username already exists");
+        User user = getUserFromUserModel(userModel);
         UserRole userRole = new UserRole();
         userRole.setRoleName("ROLE_USER");
         userRole.setUser(user);
@@ -86,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
-    private User getUserForSave(UserModel userModel){
+    private User getUserFromUserModel(UserModel userModel){
         User user = new User().builder()
                 .login(userModel.getLogin())
                 .password(userModel.getPassword())

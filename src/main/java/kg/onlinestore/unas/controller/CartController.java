@@ -4,6 +4,7 @@ import kg.onlinestore.unas.entities.Cart;
 import kg.onlinestore.unas.entities.PaymentCheque;
 import kg.onlinestore.unas.entities.User;
 import kg.onlinestore.unas.exceptions.WrongBalanceException;
+import kg.onlinestore.unas.models.CartItemHistoryModel;
 import kg.onlinestore.unas.models.ItemQuantityViewModel;
 import kg.onlinestore.unas.services.CartItemService;
 import kg.onlinestore.unas.services.CartService;
@@ -51,7 +52,16 @@ public class CartController {
     }
 
     @GetMapping("/my/purchase")
-    public ResponseEntity<PaymentCheque> buyItems(Principal principal) throws WrongBalanceException {
-        return new ResponseEntity<>(cartService.buy(principal.getName()), HttpStatus.OK);
+    public ResponseEntity<?> buyItems(Principal principal) throws WrongBalanceException {
+        try {
+            return new ResponseEntity<>(cartService.buy(principal.getName()), HttpStatus.OK);
+        }catch (WrongBalanceException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/my/history")
+    private ResponseEntity<List<CartItemHistoryModel>> getHistory(Principal principal){
+        return new ResponseEntity<>(cartItemService.getAllPurchasedCartItems(principal.getName()), HttpStatus.OK);
     }
 }

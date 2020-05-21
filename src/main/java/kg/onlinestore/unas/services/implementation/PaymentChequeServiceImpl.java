@@ -75,6 +75,11 @@ public class PaymentChequeServiceImpl implements PaymentChequeService {
         return paymentProcess(paymentCheque);
     }
 
+    @Override
+    public List<PaymentCheque> findAllByWalletFrom(Wallet wallet) {
+        return paymentChequeRepo.findAllByWalletFrom(wallet);
+    }
+
     private PaymentCheque paymentProcess(PaymentCheque paymentCheque) {
         Wallet from = walletService.getById(paymentCheque.getWalletFrom().getId());
         from.setBalance(from.getBalance().subtract(paymentCheque.getAmount()));
@@ -91,5 +96,7 @@ public class PaymentChequeServiceImpl implements PaymentChequeService {
         }
         return save(paymentCheque);
     }
+
+
 
 }
