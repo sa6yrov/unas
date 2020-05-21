@@ -2,6 +2,7 @@ package kg.onlinestore.unas.controller;
 
 import kg.onlinestore.unas.entities.CartItem;
 import kg.onlinestore.unas.models.CartItemModel;
+import kg.onlinestore.unas.models.CartItemResponseModel;
 import kg.onlinestore.unas.models.ItemQuantityViewModel;
 import kg.onlinestore.unas.services.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,12 @@ public class CartItemController {
     private CartItemService cartItemService;
 
     @PostMapping
-    public ResponseEntity<CartItem> putIntoCart(@RequestBody CartItemModel cartItemModel, Principal principal){
-        return new ResponseEntity<>(cartItemService.create(cartItemModel, principal.getName()), HttpStatus.OK);
+    public ResponseEntity<?> putIntoCart(@RequestBody CartItemModel cartItemModel, Principal principal){
+        try {
+            return new ResponseEntity<>(cartItemService.create(cartItemModel, principal.getName()), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 //    @GetMapping("/my")

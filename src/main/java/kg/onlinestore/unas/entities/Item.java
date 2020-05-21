@@ -1,5 +1,6 @@
 package kg.onlinestore.unas.entities;
 
+import kg.onlinestore.unas.enums.Status;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -35,5 +36,9 @@ public class Item {
 
     @ManyToMany(mappedBy = "items")
     List<Set> sets;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    Status status;
 
 }

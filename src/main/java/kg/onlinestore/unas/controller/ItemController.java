@@ -1,6 +1,7 @@
 package kg.onlinestore.unas.controller;
 
 import kg.onlinestore.unas.entities.Item;
+import kg.onlinestore.unas.enums.Status;
 import kg.onlinestore.unas.models.ItemModel;
 import kg.onlinestore.unas.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,12 @@ public class ItemController {
 
     @GetMapping
     public List<Item> getAll(){
-        return itemService.getAll();
+        return itemService.findAllByStatus(Status.ACTIVE);
     }
 
     @GetMapping("/category/{id}")
     public List<Item> getItemByCategoryId(@PathVariable Long id){
-        return itemService.findAllByCategory_Id(id);
+        return itemService.findAllByCategory_IdAndStatus(id, Status.ACTIVE);
     }
 
     @PostMapping

@@ -2,6 +2,7 @@ package kg.onlinestore.unas.controller;
 
 import kg.onlinestore.unas.entities.Category;
 import kg.onlinestore.unas.entities.Item;
+import kg.onlinestore.unas.enums.Status;
 import kg.onlinestore.unas.services.CategoryService;
 import kg.onlinestore.unas.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class CategoryController {
 
     @GetMapping("/{id}/items")
     public List<Item> getItemsByCategoryId(@PathVariable Long id){
-        return itemService.findAllByCategory_Id(id);
+        return itemService.findAllByCategory_IdAndStatus(id, Status.ACTIVE);
     }
 }
 

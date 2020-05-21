@@ -4,6 +4,8 @@ import kg.onlinestore.unas.entities.*;
 import kg.onlinestore.unas.enums.Status;
 
 import kg.onlinestore.unas.exceptions.WrongBalanceException;
+import kg.onlinestore.unas.models.CartItemModel;
+import kg.onlinestore.unas.models.PaymentResponseModel;
 import kg.onlinestore.unas.repositories.PaymentChequeRepo;
 
 import kg.onlinestore.unas.services.*;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +61,7 @@ public class PaymentChequeServiceImpl implements PaymentChequeService {
 
 
     @Override
-    public PaymentCheque createPayment(String login) throws WrongBalanceException {
+    public PaymentResponseModel createPayment(String login) throws WrongBalanceException {
         User user = userService.findByLogin(login);
         Wallet walletFrom = walletService.findByUser(user);
         Wallet walletTo = walletService.getById(1L);
@@ -80,7 +83,7 @@ public class PaymentChequeServiceImpl implements PaymentChequeService {
         return paymentChequeRepo.findAllByWalletFrom(wallet);
     }
 
-    private PaymentCheque paymentProcess(PaymentCheque paymentCheque) {
+    private PaymentResponseModel paymentProcess(PaymentCheque paymentCheque) {
         Wallet from = walletService.getById(paymentCheque.getWalletFrom().getId());
         from.setBalance(from.getBalance().subtract(paymentCheque.getAmount()));
         Wallet to = walletService.getById(paymentCheque.getWalletTo().getId());
@@ -94,9 +97,21 @@ public class PaymentChequeServiceImpl implements PaymentChequeService {
             cartItem.setStatus(Status.PURCHASED);
             cartItemService.save(cartItem);
         }
-        return save(paymentCheque);
+        save(paymentCheque);
+        return getPaymentResponseModel(paymentCheque);
     }
 
+    private PaymentResponseModel getPaymentResponseModel(PaymentCheque paymentCheque){
+        return PaymentResponseModel.builder()
+                .consumer(paymentCheque.getWalletFrom().getUser().getLogin())
+                .requisiteOfConsumer(paymentCheque.getWalletFrom().getRequisite())
+                .requisiteOfSeller(paymentCheque.getWalletTo().getRequisite())
+                .purchasedDate(paymentCheque.getCreatedDate().toString())
+                .amount(paymentCheque.getAmount())
+                .currency(paymentCheque.getCurrency())
+                .status(paymentCheque.getStatus())
+                .build();
+    }
 
 
 }

@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getToken(UserAuth userAuth) {
         User user = findByLogin(userAuth.getLogin());
-        if(user == null) return "Error";
+        if(user == null) return "User with " + userAuth.getLogin() + "not found";
         String rawPassword = userAuth.getPassword();
         String encodedPassword = user.getPassword();
         if(passwordEncoder.matches(rawPassword, encodedPassword)) {

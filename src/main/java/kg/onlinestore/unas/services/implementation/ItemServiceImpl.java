@@ -2,6 +2,7 @@ package kg.onlinestore.unas.services.implementation;
 
 import kg.onlinestore.unas.entities.Category;
 import kg.onlinestore.unas.entities.Item;
+import kg.onlinestore.unas.enums.Status;
 import kg.onlinestore.unas.models.ItemModel;
 import kg.onlinestore.unas.repositories.ItemRepo;
 import kg.onlinestore.unas.services.CategoryService;
@@ -54,7 +55,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> findAllByCategory_Id(Long id) {
-        return itemRepo.findAllByCategory_Id(id);
+    public List<Item> findAllByCategory_IdAndStatus(Long id, Status status) {
+        return itemRepo.findAllByCategory_IdAndStatus(id, status);
+    }
+
+    @Override
+    public List<Item> findAllByStatus(Status status) {
+        return itemRepo.findAllByStatus(status);
     }
 }

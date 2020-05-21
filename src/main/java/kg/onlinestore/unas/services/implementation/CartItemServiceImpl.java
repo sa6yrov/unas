@@ -4,6 +4,7 @@ import kg.onlinestore.unas.entities.*;
 import kg.onlinestore.unas.enums.Status;
 import kg.onlinestore.unas.models.CartItemHistoryModel;
 import kg.onlinestore.unas.models.CartItemModel;
+import kg.onlinestore.unas.models.CartItemResponseModel;
 import kg.onlinestore.unas.models.ItemQuantityViewModel;
 import kg.onlinestore.unas.repositories.CartItemRepo;
 import kg.onlinestore.unas.services.*;
@@ -58,7 +59,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public CartItem create(CartItemModel cartItemModel, String login) {
+    public CartItemResponseModel create(CartItemModel cartItemModel, String login) {
         User user = userService.findByLogin(login);
         Cart cart = cartService.findByUser(user);
         Item item = itemService.getById(cartItemModel.getItemId());
@@ -73,7 +74,18 @@ public class CartItemServiceImpl implements CartItemService {
         cart.setTotalAmount(cart.getTotalAmount().add(cartItem.getUnitItemPrice().multiply(new BigDecimal(cartItem.getItemsQuantity()))));
         cartService.save(cart);
 
-        return save(cartItem);
+        save(cartItem);
+        return CartItemResponseModel.builder()
+                .consumer(user.getLogin())
+                .category(item.getCategory().getCategoryName())
+                .itemName(item.getItemName())
+                .itemQuantity(cartItem.getItemsQuantity())
+                .price(item.getPrice())
+                .discountPercentages(item.getDiscountPercentages())
+                .unitItemPrice(cartItem.getUnitItemPrice())
+                .totalAmount(cart.getTotalAmount())
+                .status(cartItem.getStatus())
+                .build();
     }
 
     @Override

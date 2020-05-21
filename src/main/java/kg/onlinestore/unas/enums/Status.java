@@ -4,5 +4,7 @@ public enum Status {
     SUCCESS,
     FAILED,
     PURCHASED,
-    NOT_PURCHASED
+    NOT_PURCHASED,
+    ACTIVE,
+    INACTIVE
 }
