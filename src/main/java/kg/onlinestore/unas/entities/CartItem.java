@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Data
@@ -32,6 +33,9 @@ public class CartItem {
 
     @Column(name = "items_quantity")
     Integer itemsQuantity;
+
+    @Column(name = "purchased_date")
+    Date purchasedDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

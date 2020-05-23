@@ -8,7 +8,7 @@ import kg.onlinestore.unas.models.UserModel;
 import java.util.Optional;
 
 public interface UserService extends BaseService<User> {
-    User createUser(UserModel userModel) throws WrongUserException;
+    UserModel createUser(UserModel userModel) throws WrongUserException;
 
     User findByLogin (String login);
 

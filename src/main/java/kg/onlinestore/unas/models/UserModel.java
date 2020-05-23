@@ -1,5 +1,6 @@
 package kg.onlinestore.unas.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

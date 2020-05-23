@@ -33,9 +33,6 @@ public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private WalletService walletService;
 
-    @Autowired
-    private PaymentChequeService paymentChequeService;
-
 
     @Override
     public List<CartItem> getAll() {
@@ -118,7 +115,7 @@ public class CartItemServiceImpl implements CartItemService {
         List<CartItemHistoryModel> cartItemHistoryModels = new ArrayList<>();
 
         List<CartItem> cartItems = findAllByCart_IdAndStatus(cart.getId(), Status.PURCHASED);
-        List<PaymentCheque> paymentCheques = paymentChequeService.findAllByWalletFrom(wallet);
+
 
         for (CartItem c : cartItems) {
             CartItemHistoryModel cartItemHistoryModel = new CartItemHistoryModel();
@@ -126,9 +123,7 @@ public class CartItemServiceImpl implements CartItemService {
             cartItemHistoryModel.setItemQuantity(c.getItemsQuantity());
             cartItemHistoryModel.setStatus(c.getStatus());
             cartItemHistoryModel.setAmount(c.getUnitItemPrice().multiply(new BigDecimal(c.getItemsQuantity())));
-            for (PaymentCheque p : paymentCheques) {
-                cartItemHistoryModel.setPurchasedDate(p.getCreatedDate().toString());
-            }
+            cartItemHistoryModel.setPurchasedDate(c.getPurchasedDate().toString());
             cartItemHistoryModels.add(cartItemHistoryModel);
         }
         return cartItemHistoryModels;

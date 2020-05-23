@@ -11,6 +11,7 @@ import kg.onlinestore.unas.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -53,6 +54,7 @@ public class CartController {
 
     @GetMapping("/my/purchase")
     public ResponseEntity<?> buyItems(Principal principal) throws WrongBalanceException {
+//        Principal principal1 = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
             return new ResponseEntity<>(cartService.buy(principal.getName()), HttpStatus.OK);
         }catch (WrongBalanceException e){

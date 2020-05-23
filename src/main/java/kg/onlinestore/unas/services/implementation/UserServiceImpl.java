@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserModel userModel) throws WrongUserException {
+    public UserModel createUser(UserModel userModel) throws WrongUserException {
 
 
         if(findByLogin(userModel.getLogin()) != null) throw new WrongUserException("User with this username already exists");
@@ -85,7 +85,13 @@ public class UserServiceImpl implements UserService {
         cart.setUser(user);
         cartService.save(cart);
 
-        return user;
+        return getUserModel(user);
+    }
+    private UserModel getUserModel(User user){
+        return UserModel.builder()
+                .login(user.getLogin())
+                .email(user.getEmail())
+                .build();
     }
     private User getUserFromUserModel(UserModel userModel){
         User user = new User().builder()

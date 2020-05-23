@@ -1,5 +1,6 @@
 package kg.onlinestore.unas.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import kg.onlinestore.unas.entities.User;
 import kg.onlinestore.unas.exceptions.WrongUserException;
 import kg.onlinestore.unas.models.UserAuth;
